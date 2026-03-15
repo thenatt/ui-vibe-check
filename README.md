@@ -1,6 +1,8 @@
-# UI Vibe Check
+# ui-vibe-check
 
-A set of Cursor command files that systematically raise the visual and interaction quality of AI-generated UI. Apply them sequentially after any AI generates a first draft.
+AI is great at generating UI. It's terrible at caring about the details. This repo fixes that.
+
+Three Cursor command files that systematically raise the quality of AI-generated UI — from "it works" to "it's good." Apply them sequentially after any first draft.
 
 ---
 
@@ -8,9 +10,9 @@ A set of Cursor command files that systematically raise the visual and interacti
 
 | File | Job | Scope |
 |---|---|---|
-| `laws-of-ux.md` | Fix usability violations | Structure, interaction logic, input handling |
-| `ui-polish.md` | Fix visual roughness | Typography, spacing, shadows, animation, layout |
-| `motion-patterns.md` | Fix or add Motion animations | React components using `motion/react` only |
+| `dont-make-them-think.md` | Fix usability violations | Structure, interaction logic, input handling |
+| `pixel-therapy.md` | Fix visual roughness | Typography, spacing, shadows, animation, layout |
+| `make-it-move.md` | Fix or add Motion animations | React components using `motion/react` only |
 
 ---
 
@@ -19,15 +21,15 @@ A set of Cursor command files that systematically raise the visual and interacti
 Reference each file using `@` in your prompt:
 
 ```
-@laws-of-ux.md audit this component
-@ui-polish.md audit this component
-@motion-patterns.md audit this component
+@dont-make-them-think.md audit this component
+@pixel-therapy.md audit this component
+@make-it-move.md audit this component
 ```
 
-Or chain them in one prompt, in order:
+Or run the full vibe check in one shot:
 
 ```
-@laws-of-ux.md @ui-polish.md @motion-patterns.md audit this component and apply all relevant fixes
+@dont-make-them-think.md @pixel-therapy.md @make-it-move.md audit this component and apply all relevant fixes
 ```
 
 ---
@@ -37,13 +39,13 @@ Or chain them in one prompt, in order:
 **1 → 2 → 3. Always.**
 
 ```
-laws-of-ux  →  ui-polish  →  motion-patterns
+dont-make-them-think  →  pixel-therapy  →  make-it-move
 ```
 
 **Why order matters:**
-- `laws-of-ux` may restructure components (grouping nav items, splitting forms). Do this first so the structure is stable before visual polish is applied.
-- `ui-polish` applies the visual layer on top of settled structure. Doing this before structure is final means some fixes may need to be redone.
-- `motion-patterns` is applied last because Motion wraps existing elements. If structure or visual changes happen after motion is added, the motion code may need to be rewritten.
+- `dont-make-them-think` may restructure components — grouping nav items, splitting forms, fixing interaction logic. Structure needs to be stable before the visual layer goes on top.
+- `pixel-therapy` applies the visual layer. Doing this before structure is settled means some fixes may need to be redone.
+- `make-it-move` wraps existing elements with Motion. If structure or visual changes happen after, the motion code breaks. Always last.
 
 ---
 
@@ -51,16 +53,16 @@ laws-of-ux  →  ui-polish  →  motion-patterns
 
 | Situation | Skip |
 |---|---|
-| Static site with no React | `motion-patterns.md` |
-| No forms, inputs, or navigation | `laws-of-ux.md` (mostly) |
-| CSS/HTML-only project | `motion-patterns.md` |
-| Component already has Motion installed and wired | Apply all three |
+| Static site with no React | `make-it-move.md` |
+| No forms, inputs, or navigation | `dont-make-them-think.md` (mostly) |
+| CSS / HTML-only project | `make-it-move.md` |
+| React project with Motion already wired | Apply all three |
 
 ---
 
 ## What Each File Fixes
 
-### `laws-of-ux.md`
+### `dont-make-them-think.md`
 - Hit areas too small on icon buttons and touch targets
 - Navigation or menus with more than 7 flat items
 - Raw unformatted numbers, phone numbers, card numbers in the UI
@@ -68,7 +70,7 @@ laws-of-ux  →  ui-polish  →  motion-patterns
 - Loading states that render null or blank instead of a skeleton
 - Input validation that rejects valid formats (phone with dashes, etc.)
 
-### `ui-polish.md`
+### `pixel-therapy.md`
 - Heading text wrapping with orphaned last words
 - Nested elements with the same border-radius (the "pinch" problem)
 - Icons that pop in/out with no transition
@@ -77,16 +79,16 @@ laws-of-ux  →  ui-polish  →  motion-patterns
 - Keyframe animations on hover states (should be CSS transitions)
 - Multiple elements entering simultaneously with no stagger
 - Exit animations as long as entrance animations
-- Buttons with equal padding on text+icon sides (optical alignment)
+- Buttons with equal padding on text + icon sides (optical alignment)
 - Cards with hard borders instead of layered box-shadows
 - Images that lose definition against variable backgrounds
 - Card grids with unequal heights or misaligned internal elements
 
-### `motion-patterns.md`
+### `make-it-move.md`
 - Buttons that snap between label widths on state change
 - Accordions that jump to new height instead of animating
 - Elements that exist in two states with no shared transition
-- Pages that swap instantly with no navigation sense
+- Pages that swap instantly with no sense of navigation
 - Lists that teleport to new positions on reorder
 - Tab content that replaces without coordinated exit + enter
 - Draggable elements that teleport back to origin on release
@@ -99,26 +101,26 @@ laws-of-ux  →  ui-polish  →  motion-patterns
 
 ---
 
-## Audit Mode vs Generate Mode
+## Two Modes
 
-All three files support both modes.
+Both modes work with all three files.
 
-**Audit mode** — apply to existing generated code:
+**Audit mode** — fix an existing first draft:
 ```
-@ui-polish.md audit this component and fix all violations
-```
-
-**Generate mode** — apply when building something new:
-```
-@ui-polish.md @motion-patterns.md build a pricing card component
+@pixel-therapy.md audit this component and fix all violations
 ```
 
-In generate mode, the AI bakes the patterns in from the start rather than fixing after. Higher quality output, fewer passes needed.
+**Generate mode** — bake quality in from the start:
+```
+@pixel-therapy.md @make-it-move.md build a pricing card component
+```
+
+Generate mode is better when you can use it. The AI applies the patterns while building rather than retrofitting — fewer passes, higher baseline.
 
 ---
 
 ## Source Material
 
-- `laws-of-ux.md` — distilled from [Laws of UX](https://www.userinterface.wiki/laws-of-ux)
-- `ui-polish.md` — distilled from [Details That Make Interfaces Feel Better](https://jakub.kr/writing/details-that-make-interfaces-feel-better)
-- `motion-patterns.md` — distilled from [Motion documentation](https://motion.dev/docs/react-layout-animations) and [Animating Container Bounds](https://jakub.kr/writing/animating-container-bounds)
+- `dont-make-them-think.md` — distilled from [Laws of UX](https://www.userinterface.wiki/laws-of-ux)
+- `pixel-therapy.md` — distilled from [Details That Make Interfaces Feel Better](https://jakub.kr/writing/details-that-make-interfaces-feel-better)
+- `make-it-move.md` — distilled from [Motion docs](https://motion.dev/docs/react-layout-animations) and [Animating Container Bounds](https://jakub.kr/writing/animating-container-bounds)
