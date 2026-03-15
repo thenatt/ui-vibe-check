@@ -50,7 +50,8 @@ laws-of-ux  →  ui-polish  →  motion-patterns
 ## When to Skip a File
 
 | Situation | Skip |
-|---|---|| Static site with no React | `motion-patterns.md` |
+|---|---|
+| Static site with no React | `motion-patterns.md` |
 | No forms, inputs, or navigation | `laws-of-ux.md` (mostly) |
 | CSS/HTML-only project | `motion-patterns.md` |
 | Component already has Motion installed and wired | Apply all three |
